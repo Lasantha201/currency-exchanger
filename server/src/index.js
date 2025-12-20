@@ -11,7 +11,7 @@ app.use(cors());
 //all currencies
 app.get('/getAllCurencies', async (req, res) => {
 
-    const nameURL = `https://docs.openexchangerates.org/reference/currencies-json?app_id=02b6be1f928d4a48a23c3b338ab815ee`;
+    const nameURL = `https://openexchangerates.org/api/currencies.json?app_id=02b6be1f928d4a48a23c3b338ab815ee`;
 
     
     try {
@@ -27,6 +27,22 @@ app.get('/getAllCurencies', async (req, res) => {
     }
 
 });
+
+
+app.get("/convert", async(req, res) =>{
+    
+    const {date, sourceCurrency, targetCurrency, amountInSource} = req.query;
+
+    try {
+        const dataURL = `https://openexchangerates.org/api/historical/${date}.json?app_id=02b6be1f928d4a48a23c3b338ab815ee`
+        const dataResponse = await axios.get(dataURL);
+        const rates = dataResponse.rates;
+    } catch (err) {
+        console.error(err);
+    }
+    
+})
+
 
 //listen on port 
 app.listen(5000, () => {

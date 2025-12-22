@@ -36,7 +36,18 @@ app.get("/convert", async(req, res) =>{
     try {
         const dataURL = `https://openexchangerates.org/api/historical/${date}.json?app_id=02b6be1f928d4a48a23c3b338ab815ee`
         const dataResponse = await axios.get(dataURL);
-        const rates = dataResponse.rates;
+        const rates = dataResponse.data.rates;
+
+        //rates
+        const rateSource = rates[sourceCurrency];
+        const rateTarget = rates[targetCurrency];
+
+        //final target value
+        const amountInTarget = (rateTarget / rateSource) * amountInSource;
+
+        return res.json({amountInTarget: amountInTarget.toFixed(2)});
+
+
     } catch (err) {
         console.error(err);
     }
